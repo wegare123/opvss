@@ -1,5 +1,9 @@
 #!/bin/bash
 #opvss (Wegare)
+stop () {
+killall -q openvpn ss-local fping
+/etc/init.d/dnsmasq restart 2>/dev/null
+}
 udp2="$(cat /root/akun/opvss.txt | grep -i udp | cut -d= -f2)" 
 host2="$(cat /root/akun/opvss.txt | grep -i host | cut -d= -f2 | head -n1)" 
 port2="$(cat /root/akun/opvss.txt | grep -i port | cut -d= -f2)" 
@@ -137,6 +141,7 @@ sleep 2
 clear
 /usr/bin/opvss
 elif [ "${tools}" = "2" ]; then
+stop
 opvpn3="$(cat /root/akun/opvss.txt | grep -i direkopvpn | cut -d= -f2 | head -n1)" 
 opvpn=$(find /root -name $opvpn3)
 ss-local -c /root/akun/opvss.json &
@@ -144,8 +149,7 @@ sleep 3
 openvpn $opvpn &
 fping -l google.com > /dev/null 2>&1 &
 elif [ "${tools}" = "3" ]; then
-killall -q openvpn ss-local dnsmasq fping
-/etc/init.d/dnsmasq start > /dev/null
+stop
 echo "Stop Suksess"
 sleep 2
 clear
