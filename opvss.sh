@@ -141,6 +141,11 @@ sleep 2
 clear
 /usr/bin/opvss
 elif [ "${tools}" = "2" ]; then
+cek="$(cat /root/akun/opvss.txt)"
+if [[ -z $cek ]]; then
+echo "anda belum membuat profile"
+exit
+fi
 stop
 opvpn3="$(cat /root/akun/opvss.txt | grep -i direkopvpn | cut -d= -f2 | head -n1)" 
 opvpn=$(find /root -name $opvpn3)
